@@ -48,3 +48,12 @@ Performed operations include:
 ✔ Scaling numerical fields (`Total_Cost`, `Dosage`, `Patient_Age`, `Days_Supply`)  
 ✔ Output dataset expanded to **132 ML-ready columns**
 
+---
+
+## 📈 Monthly Fraud Trend (Exploratory Insight)
+
+Fraud claims grouped by month using:  
+```python
+df['Month'] = df['Prescription_Date'].dt.to_period('M')
+monthly_fraud = df.groupby('Month')['Fraudulent_Claim'].sum()
+
