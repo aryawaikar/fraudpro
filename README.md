@@ -1,59 +1,62 @@
 # 💊 Prescription Fraud Detection – Data Analytics & Preprocessing Project
 
-This project performs **data exploration, preprocessing, statistical analysis, fraud trend analysis, aggregation, and visualization** to understand and prepare medical prescription data for a downstream fraud-detection model.
+This project performs complete **data exploration, preprocessing, fraud trend analysis, statistical analysis, aggregation, visualization, and feature preparation** on a prescription dataset.  
+It prepares the dataset so that machine learning models can later be built to detect fraudulent prescription claims.
 
 ---
 
 ## 🎯 Project Objective
 
-- Analyze prescription dataset for fraud signals
-- Clean raw data & make it ML-ready
-- Perform statistics on prescription cost
-- Visualize fraud behavior trends
-- Identify anomaly patterns (cost, refill, flagged doctors)
-- Encode & scale features for model-training
+The goal of this project is to:
+
+- Understand and analyze prescription data
+- Detect hidden fraud patterns and suspicious behavior
+- Clean and prepare dataset for machine learning
+- Perform statistical analysis on prescription cost
+- Examine seasonal/monthly trends of fraudulent claims
+- Encode and scale data for ML-readiness
+- Convert raw categorical and text-based fields into numerical ML features
 
 ---
 
-## 📂 Dataset Summary
+## 📂 Dataset Description
 
-Dataset Shape: **500 rows × 25 columns**  
-Extracted from notebook: :contentReference[oaicite:1]{index=1}
+The dataset contains **500 rows × 25 columns**.  
+Below are the types of information available in the dataset:
 
-| Column Example | Description |
-|----------------|-------------|
-| Prescription_ID | Unique record identifier |
-| Patient_ID / Doctor_ID / Pharmacy_ID | Entity identifiers |
-| Drug_Name / Drug_Category | Medication details |
-| Dosage | e.g., `"98mg"` → converted into integer `98` |
-| Prescription_Date / Filled_Date | Timeline of prescription lifecycle |
-| Insurance_Claim | 0 = not claimed, 1 = claimed |
-| Total_Cost | Medication financial value |
-| Refill_Count | Times prescription was refilled |
-| Doctor_Specialty / Patient_Health_Condition | Medical metadata |
-| Patient_Region / Doctor_Region / Pharmacy_Region | Geographic patterns |
-| Doctor_Flagged | Doctor suspicious-behaviour flag |
-| **Fraudulent_Claim** | 🎯 Target variable (0 = normal / 1 = fraud) |
-
----
-
-## 🧹 Data Preprocessing Steps
-
-Performed operations include:  
-:contentReference[oaicite:2]{index=2}
-
-✔ Type conversion (`98mg` → `98`)  
-✔ Missing value handling using `SimpleImputer`  
-✔ One-Hot Encoding for categorical columns  
-✔ Scaling numerical fields (`Total_Cost`, `Dosage`, `Patient_Age`, `Days_Supply`)  
-✔ Output dataset expanded to **132 ML-ready columns**
+| Field | Meaning |
+|-------|---------|
+| Prescription_ID | Unique identifier for each prescription |
+| Patient_ID | Unique identifier assigned to each patient |
+| Doctor_ID | Unique identifier of prescribing doctor |
+| Pharmacy_ID | Unique pharmacy identifier |
+| Drug_Name | Name of prescribed medication |
+| Drug_Category | Type/category of drug (e.g., Antibiotic, Hypertension) |
+| Dosage | Contains numeric + string format (e.g., "98mg") |
+| Prescription_Date | Date when prescription was issued |
+| Prescription_Filled_Date | Date when medication was dispensed |
+| Insurance_Claim | Binary field (0 = not claimed, 1 = claimed) |
+| Total_Cost | Total dollar cost of prescription |
+| Refill_Count | Number of refill requests |
+| Patient_Age | Age of patient |
+| Patient_Gender | Gender |
+| Patient_Health_Condition | Medical condition of patient |
+| Prescription_Status | Whether filled, canceled, pending |
+| Drug_Schedule | Regulatory classification (Schedule II, III, etc.) |
+| Patient_Region | Geographic region of patient |
+| Doctor_Region | Region where doctor practices |
+| Pharmacy_Region | Pharmacy location |
+| Doctor_Flagged | 0 or 1 — whether doctor is marked suspicious |
+| **Fraudulent_Claim** | 🎯 Target variable – whether this prescription is fraudulent (0 = No, 1 = Yes) |
 
 ---
 
-## 📈 Monthly Fraud Trend (Exploratory Insight)
+## 🧹 Data Preprocessing Details
 
-Fraud claims grouped by month using:  
+The following data-cleaning and preprocessing techniques were applied:
+
+### 1️⃣ Cleaning Data and Converting Text Fields
 ```python
-df['Month'] = df['Prescription_Date'].dt.to_period('M')
-monthly_fraud = df.groupby('Month')['Fraudulent_Claim'].sum()
+df['Dosage'] = df['Dosage'].apply(lambda x: int(x[:-2]))
+
 
