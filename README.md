@@ -49,14 +49,6 @@ Below are the types of information available in the dataset:
 | Doctor_Flagged | 0 or 1 — whether doctor is marked suspicious |
 | **Fraudulent_Claim** | 🎯 Target variable – whether this prescription is fraudulent (0 = No, 1 = Yes) |
 
----
 
-## 🧹 Data Preprocessing Details
-
-The following data-cleaning and preprocessing techniques were applied:
-
-### 1️⃣ Cleaning Data and Converting Text Fields
-```python
-df['Dosage'] = df['Dosage'].apply(lambda x: int(x[:-2]))
 
 
